@@ -1,0 +1,72 @@
+$ dvc init
+Initialized DVC repository.
+
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:    # dvc automatically add those files to the repository
+  (use "git rm --cached <file>..." to unstage)
+        new file:   .dvc/.gitignore
+        new file:   .dvc/config
+        new file:   .dvcignore
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        README.md
+        dvc_test.py
+        mlflow_test.py
+        requirements.txt
+        setup.py
+        test.ipynb
+
+$ git commit -m "first commit"
+[master (root-commit) f905345] first commit
+ 3 files changed, 3 insertions(+)
+ create mode 100644 .dvc/.gitignore
+ create mode 100644 .dvc/config
+ create mode 100644 .dvcignore
+
+$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        README.md
+        dvc_test.py
+        mlflow_test.py
+        requirements.txt
+        setup.py
+        test.ipynb
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        README.md
+        dvc_test.py
+        mlflow_test.py
+        requirements.txt
+        setup.py
+        test.ipynb
+
+$ dvc add data/data.csv
+ERROR: bad DVC file name 'data\data.csv.dvc' is git-ignored.  # data already in .gitignore
+
+$ dvc add data/data.csv
+100% Adding...|███████████████████████████████████████████████████████|1/1 [00:00,  1.48file/s] 
+
+To track the changes with git, run:
+
+        git add 'data\.gitignore' 'data\data.csv.dvc'
+
+To enable auto staging, run:
+
+        dvc config core.autostage true
+
+$ git branch -M main  # move to main from master
