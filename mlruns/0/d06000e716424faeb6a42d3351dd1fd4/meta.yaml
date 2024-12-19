@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/a27_YEARS_OLD/mlflow_dvc_airflow/mlruns/0/d06000e716424faeb6a42d3351dd1fd4/artifacts
+end_time: 1734605117237
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d06000e716424faeb6a42d3351dd1fd4
+run_name: intrigued-pig-779
+run_uuid: d06000e716424faeb6a42d3351dd1fd4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734605117165
+status: 3
+tags: []
+user_id: lenovo

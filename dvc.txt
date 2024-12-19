@@ -229,3 +229,139 @@ $ dvc push
 Collecting                                                           |1.00 [00:00,  151entry/s] 
 Pushing
 1 file pushed
+
+$ git add .
+warning: in the working copy of '.gitignore', CRLF will be replaced by LF the next time Git touches it
+
+$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   .dvc/config
+        modified:   .gitignore
+        modified:   dvc.txt
+        new file:   remote_s3_storage/files/md5/1e/456767f89608073b9027b3e2f87063
+
+$ git restore --staged remote_s3_storage/files/md5/1e/456767f89608073b9027b3e2f87063
+
+$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   .dvc/config
+        modified:   .gitignore
+        modified:   dvc.txt
+
+$ git commit -m "data added"
+[main b3f7b3c] data added
+ 3 files changed, 19 insertions(+), 2 deletions(-)
+
+$ dvc add data/data.csv
+100% Adding...|███████████████████████████████████████████████████████|1/1 [00:00,  7.72file/s] 
+                                                                                                
+To track the changes with git, run:
+
+        git add 'data\data.csv.dvc'
+
+To enable auto staging, run:
+
+        dvc config core.autostage true
+
+$ dvc push
+Collecting                                                           |1.00 [00:00,  188entry/s]
+Pushing
+1 file pushed
+
+$ dvc repro    # reproduciblity
+Running stage 'stage_01':
+> python stage_01.py
+Generating lock file 'dvc.lock'
+Updating lock file 'dvc.lock'
+
+Running stage 'stage_02':
+> python stage_02.py
+stage 02  text:This is a test file for stage 01
+Updating lock file 'dvc.lock'
+
+To track the changes with git, run:
+
+        git add dvc.lock .gitignore
+
+To enable auto staging, run:
+
+        dvc config core.autostage true
+Use `dvc push` to send your updates to remote storage.
+
+
+$ dvc repro
+Stage 'stage_01' didn't change, skipping
+Running stage 'stage_02':
+> python stage_02.py
+stage 02  text:This is a test file for stage 01
+this is test change in stage 02
+Updating lock file 'dvc.lock'
+
+To track the changes with git, run:
+
+        git add dvc.lock
+
+To enable auto staging, run:
+
+        dvc config core.autostage true
+Use `dvc push` to send your updates to remote storage
+
+$ dvc dag
++----------+ 
+| stage_01 |
++----------+
+      *
+      *
+      *
++----------+
+| stage_02 |
++----------+
++-------------------+
+| data\data.csv.dvc |
++-------------------+
+
+
+$ dvc repro
+Running stage 'stage_01':
+> python stage_01.py
+Updating lock file 'dvc.lock'
+
+Stage 'stage_02' didn't change, skipping
+Running stage 'stage_03':
+> python stage_03.py
+This is a 2nd test file for stage 01
+Updating lock file 'dvc.lock'
+
+To track the changes with git, run:
+
+        git add dvc.lock .gitignore
+
+To enable auto staging, run:
+
+        dvc config core.autostage true
+Use `dvc push` to send your updates to remote storage.
+
+
+$ dvc dag
+            +----------+
+            | stage_01 |
+            +----------+
+           ***         ***
+          *               *
+        **                 **
++----------+            +----------+
+| stage_02 |            | stage_03 |
++----------+            +----------+
++-------------------+
+| data\data.csv.dvc |
++-------------------+
