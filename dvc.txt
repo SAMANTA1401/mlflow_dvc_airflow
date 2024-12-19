@@ -217,3 +217,15 @@ Building workspace index                                             |2.00 [00:0
 Comparing indexes                                                    |3.00 [00:00,  961entry/s] 
 Applying changes                                                     |1.00 [00:00,   284file/s] 
 M       data\data.csv
+
+
+$ dvc remote add -d remote_storage remote_s3_storage
+Setting 'remote_storage' as a default remote.
+ERROR: configuration error - config file error: remote 'remote_storage' already exists. Use `-f|--force` to overwrite it.
+$ dvc remote add -d -f remote_storage remote_s3_storage
+Setting 'remote_storage' as a default remote.
+
+$ dvc push
+Collecting                                                           |1.00 [00:00,  151entry/s] 
+Pushing
+1 file pushed
